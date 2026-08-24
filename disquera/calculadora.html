@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</head>
+</head>
+<body>
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-gold py-3 sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">THE REYES RECORDS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="servicios.html">Servicios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="integrantes.html">Integrantes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contacto.html">Contacto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="albunes.html">Albunes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="calculadora.html">Calculadora</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<h1 id="elementounico"class="gold-title">Operaciones matematicas</h1>
+<div class="container">
+     <h1 class="gold-title">ingresa 2 nuemero para realizar las operaciones</h1>
+     <form>
+  <div class="mb-3">
+    <label for="num1" class="form-label">numero 1</label>
+    <input type="number" class="form-control" id="n1">
+  </div>
+  <div class="mb-3">
+    <label for="num2" class="form-label">numero 2</label>
+    <input type="number" class="form-control" id="n2" >
+  </div>
+</form>
+<button class="btn btn-primary" onclick="sumar()">sumar</button>
+<button class="btn btn-primary" onclick="restar()">restar</button>
+<button class="btn btn-primary" onclick="multiplicar()">multiplicar</button>
+<button class="btn btn-primary" onclick="dividir()">dividir</button>
+
+<div class="mt-2 text-start">
+    <p class="fondounico">Resultado: <span id="resultado" class="sumar()">0</span></p>
+  </div>
+</div>
+
+<script>
+    function sumar() {
+      let num1=document.getElementById("n1").value;
+       let num2=document.getElementById("n2").value;
+       let sum= parseFloat(num1) + parseFloat(num2)
+       document.getElementById("resultado").textContent = sum;
+       console.log(sum);  
+    }
+    function restar() {
+        let num1=document.getElementById("n1").value;
+       let num2=document.getElementById("n2").value;
+        let res= parseFloat(num1) - parseFloat(num2)
+        document.getElementById("resultado").textContent = res;
+       console.log(res); 
+    }
+    function multiplicar() {
+        let num1=document.getElementById("n1").value;
+       let num2=document.getElementById("n2").value;
+        let mul= parseFloat(num1) * parseFloat(num2)
+        document.getElementById("resultado").textContent = mul;
+       console.log(mul); 
+    }
+    function dividir() {
+        let num1=document.getElementById("n1").value;
+       let num2=document.getElementById("n2").value;
+        let div= parseFloat(num1) / parseFloat(num2)
+        document.getElementById("resultado").textContent = div;
+       console.log(div); 
+    }
+</script>
+   
+
+</body>
+</html>
