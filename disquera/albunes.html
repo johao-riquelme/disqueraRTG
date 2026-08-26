@@ -36,70 +36,8 @@
     </div>
   </div>
 </nav><div class="fondo-hero d-flex align-items-center justify-content-center text-center">
-<table class="table table-dark">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Parámetro</th>
-      <th scope="col">Valor</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Compra</td>
-      <td id="dolar-compra">Cargando...</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Venta</td>
-      <td id="dolar-venta">Cargando...</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Nombre</td>
-      <td id="dolar-nombre">Cargando...</td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>Divisa</td>
-      <td id="dolar-moneda">Cargando...</td>
-    </tr>
-    <tr>
-      <th scope="row">5</th>
-      <td>Fecha</td>
-      <td id="dolar-fecha">Cargando...</td>
-    </tr>
-    <tr>
-      <th scope="row">6</th>
-      <td>Último Cierre</td>
-      <td id="dolar-obs">Cargando...</td>
-    </tr>
-  </tbody>
-</table>
-<script>
-  fetch('https://cl.dolarapi.com/v1/cotizaciones/usd')
-    .then(response => response.json())
-    .then(data => {
-      const fechaFormateada = data.fechaActualizacion.substring(0, 10);
-      document.getElementById('dolar-compra').textContent = data.compra;
-      document.getElementById('dolar-venta').textContent = data.venta;
-      document.getElementById('dolar-nombre').textContent = data.nombre;
-      document.getElementById('dolar-moneda').textContent = data.moneda;
-      document.getElementById('dolar-fecha').textContent = fechaFormateada
-      document.getElementById('dolar-obs').textContent = data.ultimoCierre;
-      console.log('=== DATOS DEL DÓLAR ===');
-      console.log('Compra:', data.compra);
-      console.log('Venta:', data.venta);
-      console.log('Nombre:', data.nombre);
-      console.log('Divisa:', data.moneda);
-      console.log('Fecha:', fechaFormateada);
-      console.log('Último Cierre:', data.ultimoCierre);
-    })
-    .catch(error => {
-      console.error('Error al cargar la tabla:', error);
-    });
-</script>
+
+
 </div>    
 </body>
 </html>
