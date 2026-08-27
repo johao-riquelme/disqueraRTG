@@ -35,6 +35,9 @@
           <a class="nav-link" href="albunes.html">Álbumes</a>
         </li>
       </ul>
+      <button class="btn btn-outline-warning ms-auto" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+        🛒 Carrito Disquero (<span id="cart-count">0</span>)
+      </button>
     </div>
   </div>
 </nav>
@@ -54,14 +57,11 @@
        <div class="card-body">
        <h5 class="card-title">Plan Basico</h5>
        <p class="card-text">Plan Premiun que incluye las 2 horas en el set con ayuda del productor</p>
-       <a href="#" class="btn btn-warning">Valor $70,00</a>
+       <p class="card-text"> <strong>Valor $50,00</strong></p>
+       <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Básico" data-precio="50">
+              Agregar al Carrito
+            </button>
         
-      <div class="d-flex justify-content-center gap-3 mt-3">
-
-    <a href="#" target="_blank" class="fs-3 icono-hover color-yt"><i class="bi bi-youtube"></i></a>
-    <a href="https://www.instagram.com/TU_LINK/" target="_blank" class="fs-3 icono-hover color-ig"><i class="bi bi-instagram"></i></a>
-    <a href="#" target="_blank" class="fs-3 icono-hover color-sp"><i class="bi bi-spotify"></i></a>
-    </div>
         </div>
        </div>
        </div>
@@ -71,16 +71,11 @@
         <div class="card-body">
         <h5 class="card-title">Plan Premiun </h5>
         <p class="card-text">Plan Gold que incluye las 4 horas con ayuda del productor mas un curso de como funcionan las cosas</p>
-        <a href="#" class="btn btn-warning">Valor $85,00</a>
+       <p class="card-text"> <strong>Valor $70,00</strong></p>
+       <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Premium" data-precio="70">
+              Agregar al Carrito
+            </button>
         
-    
-        <div class="d-flex justify-content-center gap-3 mt-3">
-
-    <a href="#" target="_blank" class="fs-3 icono-hover color-yt"><i class="bi bi-youtube"></i></a>
-    <a href="https://www.instagram.com/TU_LINK/" target="_blank" class="fs-3 icono-hover color-ig"><i class="bi bi-instagram"></i></a>
-    <a href="#" target="_blank" class="fs-3 icono-hover color-sp"><i class="bi bi-spotify"></i></a>
-    </div>
-
       </div>
       </div>
       </div>
@@ -91,15 +86,11 @@
       <div class="card-body">
       <h5 class="card-title">Plan Gold</h5>
       <p class="card-text">Plan Deluxe Incluye todas las cosas full de nuestra disquera</p>
-      <a href="#" class="btn btn-warning">Valor $100,00</a>
+      <p class="card-text"> <strong>Valor $85,00</strong></p>
+       <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Gold" data-precio="85">
+              Agregar al Carrito
+            </button>
       
-        <div class="d-flex justify-content-center gap-3 mt-3">
-
-    <a href="#" target="_blank" class="fs-3 icono-hover color-yt"><i class="bi bi-youtube"></i></a>
-    <a href="https://www.instagram.com/TU_LINK/" target="_blank" class="fs-3 icono-hover color-ig"><i class="bi bi-instagram"></i></a>
-    <a href="#" target="_blank" class="fs-3 icono-hover color-sp"><i class="bi bi-spotify"></i></a>
-    </div>
-
       </div>
       </div>
       </div>
@@ -110,14 +101,10 @@
       <div class="card-body">
       <h5 class="card-title">Plan Deluxe</h5>
       <p class="card-text">Plan Deluxe Incluye todas las cosas full de nuestra disquera</p>
-      <a href="#" class="btn btn-warning">Valor $180,00</a>
-      
-        <div class="d-flex justify-content-center gap-3 mt-3">
-
-    <a href="#" target="_blank" class="fs-3 icono-hover color-yt"><i class="bi bi-youtube"></i></a>
-    <a href="https://www.instagram.com/TU_LINK/" target="_blank" class="fs-3 icono-hover color-ig"><i class="bi bi-instagram"></i></a>
-    <a href="#" target="_blank" class="fs-3 icono-hover color-sp"><i class="bi bi-spotify"></i></a>
-    </div>
+      <p class="card-text"> <strong>Valor $180,00</strong></p>
+       <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Deluxe" data-precio="180">
+              Agregar al Carrito
+            </button>
 
       </div>
       </div>
@@ -126,5 +113,86 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="modalCarrito" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light border-warning">
+      <div class="modal-header">
+        <h5 class="modal-title gold-title">Tu Carrito de Compras</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul id="lista-carrito" class="list-group list-group-flush mb-3">
+          <!-- Se llena mediante JavaScript -->
+        </ul>
+        <div class="d-flex justify-content-between fw-bold fs-5">
+          <span>Total:</span>
+          <span>$<span id="total-carrito">0.00</span> USD</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning fw-bold">Proceder al Pago</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var carrito = [];
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var botones = document.getElementsByClassName('btn-agregar');
+
+    for (var i = 0; i < botones.length; i++) {
+      botones[i].addEventListener('click', function (event) {
+        var nombre = event.target.getAttribute('data-nombre');
+        var precio = parseFloat(event.target.getAttribute('data-precio'));
+
+        agregarAlCarrito(nombre, precio);
+      });
+    }
+  });
+
+  function agregarAlCarrito(nombre, precio) {
+    var producto = {
+      nombre: nombre,
+      precio: precio
+    };
+    carrito.push(producto);
+    actualizarCarritoUI();
+  }
+
+  function eliminarDelCarrito(indice) {
+    carrito.splice(indice, 1);
+    actualizarCarritoUI();
+  }
+
+  function actualizarCarritoUI() {
+    var listaCarrito = document.getElementById('lista-carrito');
+    var cartCount = document.getElementById('cart-count');
+    var totalCarrito = document.getElementById('total-carrito');
+
+    listaCarrito.innerHTML = '';
+    var total = 0;
+
+    if (carrito.length === 0) {
+      listaCarrito.innerHTML = '<li class="list-group-item bg-transparent text-light border-secondary">El carrito está vacío</li>';
+    } else {
+      for (var j = 0; j < carrito.length; j++) {
+        total = total + carrito[j].precio;
+        listaCarrito.innerHTML += 
+          '<li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center border-secondary">' +
+            '<span>' + carrito[j].nombre + ' - $' + carrito[j].precio.toFixed(2) + ' USD</span>' +
+            '<button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarDelCarrito(' + j + ')">Eliminar</button>' +
+          '</li>';
+      }
+    }
+
+    cartCount.textContent = carrito.length;
+    totalCarrito.textContent = total.toFixed(2);
+  }
+</script>
+
+
 </body>
 </html>
