@@ -130,9 +130,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-warning fw-bold">Proceder al Pago</button>
-      </div>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+  <button type="button" class="btn btn-warning fw-bold" id="btn-pagar">Proceder al Pago</button>
+</div>
     </div>
   </div>
 </div>
@@ -141,17 +141,26 @@
   var carrito = [];
 
   document.addEventListener('DOMContentLoaded', function () {
-    var botones = document.getElementsByClassName('btn-agregar');
+  var botones = document.getElementsByClassName('btn-agregar');
 
-    for (var i = 0; i < botones.length; i++) {
-      botones[i].addEventListener('click', function (event) {
-        var nombre = event.target.getAttribute('data-nombre');
-        var precio = parseFloat(event.target.getAttribute('data-precio'));
+  for (var i = 0; i < botones.length; i++) {
+    botones[i].addEventListener('click', function (event) {
+      event.preventDefault();
+      
+      var botonPresionado = event.currentTarget;
+      var nombre = botonPresionado.getAttribute('data-nombre');
+      var precio = parseFloat(botonPresionado.getAttribute('data-precio'));
 
-        agregarAlCarrito(nombre, precio);
-      });
-    }
+      agregarAlCarrito(nombre, precio);
+    });
+  }
+
+  // EVENTO PARA EL BOTÓN DE PAGO (IMPRIME EN CONSOLA F12)
+  var btnPagar = document.getElementById('btn-pagar');
+  btnPagar.addEventListener('click', function () {
+    procesarPagoConsola();
   });
+});
 
   function agregarAlCarrito(nombre, precio) {
     var producto = {
@@ -191,7 +200,32 @@
     cartCount.textContent = carrito.length;
     totalCarrito.textContent = total.toFixed(2);
   }
+
+  function procesarPagoConsola() {
+  if (carrito.length === 0) {
+    console.log("ERROR: El carrito está vacío. Agrega al menos un plan.");
+    alert("Tu carrito está vacío.");
+    return;
+  }
+
+  var total = 0;
+  console.log("==========================================");
+  console.log("RESUMEN DE COMPRA - THE REYES RECORDS");
+  console.log("==========================================");
+
+  for (var k = 0; k < carrito.length; k++) {
+    total = total + carrito[k].precio;
+    console.log((k + 1) + ". " + carrito[k].nombre + " - $" + carrito[k].precio.toFixed(2) + " USD");
+  }
+
+  console.log("------------------------------------------");
+  console.log("TOTAL A PAGAR: $" + total.toFixed(2) + " USD");
+  console.log("==========================================");
+
+  alert("¡Pago procesado con éxito! Revisa la consola (F12) para ver el desglose.");
+}
 </script>
+
 
 
 </body>
