@@ -146,3 +146,10 @@ h1, h2, h3, .brand-title {
 .icono-hover:hover {
     transform: scale(1.2);
 }
+
+.form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+      }
