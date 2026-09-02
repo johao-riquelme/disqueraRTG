@@ -4,7 +4,7 @@ body {
     color: rgb(255, 255, 255) !important;
 }
 
-h1, h2, h3, .brand-title {
+h1, h2, h3,h5 .brand-title {
     font-family: 'Cinzel', serif;
     letter-spacing: 2px;
 }
@@ -153,3 +153,9 @@ h1, h2, h3, .brand-title {
         font-style: normal !important;
         font-weight: 400 !important;
       }
+.rr {
+    background: rgba(15, 15, 15, 0.80) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
