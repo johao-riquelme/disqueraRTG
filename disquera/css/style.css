@@ -159,3 +159,26 @@ h1, h2, h3,h5 .brand-title {
     -webkit-backdrop-filter: blur(12px) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
+
+/* Corrección global para imágenes dentro del modal */
+#modalDetalleDisco #detalleImagen {
+    max-height: 280px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Ajustes adicionales para la tipografía y bordes */
+.border-gold {
+    border: 1px solid #ffc107 !important;
+}
+
+.gold-title {
+    color: #ffc107;
+}
+
+.rr {
+    background-color: #121212 !important;
+}
