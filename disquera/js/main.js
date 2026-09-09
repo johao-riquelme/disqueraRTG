@@ -27,44 +27,151 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
- // 4. Asignar evento al botón Proceder al Pago
+    // 4. Asignar evento al botón Proceder al Pago (Con validación y mensaje integrado en el modal)
     const btnPagar = document.getElementById('btn-pagar');
     if (btnPagar) {
         btnPagar.addEventListener('click', () => {
             if (carrito.length === 0) {
-                alert("Tu carrito está vacío.");
-            } else {
-                // Generamos la boleta en la consola al presionar pagar
-                console.clear(); // Limpia la consola opcionalmente para que se vea ordenado
-                console.log("       THE REYES RECORDS");
-                console.log("========================================");
-                
-                let totalBoleta = 0;
-                carrito.forEach((prod, index) => {
-                    console.log(`${index + 1}. ${prod.nombre} ---- $${prod.precio.toLocaleString('en-US')} USD`);
-                    totalBoleta += prod.precio;
-                });
+                mostrarAlertaCarrito("Tu carrito está vacío.", "warning");
+                return;
+            }
 
-                console.log("------------------------------------------");
-                console.log(`TOTAL PAGADO: $${totalBoleta.toLocaleString('en-US')} USD`);
-                console.log("==========================================");
-                console.log("¡Gracias por tu compra en The Reyes Records!");
+            // Verificar si hay una sesión activa de usuario
+            const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
 
-                alert("¡Gracias por tu compra! Tu orden ha sido procesada con éxito.");
-                
-                // Vaciamos el carrito y actualizamos la interfaz
-                carrito = [];
-                guardarCarritoStorage();
-                actualizarCarritoUI();
-                
-                // Cerramos el modal del carrito
+            if (!usuarioActivo) {
+                // Muestra el mensaje directamente dentro del modal del carrito
+                mostrarAlertaCarrito("Debes iniciar sesión para poder procesar tu compra. Redirigiendo...", "danger");
+
+                // Espera 2 segundos para que el usuario lea el mensaje antes de enviarlo al login
+                setTimeout(() => {
+                    const modalEl = document.getElementById('modalCarrito');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+
+            // Generamos la boleta en la consola al presionar pagar
+            console.clear(); 
+            console.log("     THE REYES RECORDS");
+            console.log("========================================");
+            console.log(`Cliente: ${usuarioActivo.nombre} (${usuarioActivo.email})`);
+            console.log("----------------------------------------");
+            
+            let totalBoleta = 0;
+            carrito.forEach((prod, index) => {
+                console.log(`${index + 1}. ${prod.nombre} ---- $${prod.precio.toLocaleString('en-US')} USD`);
+                totalBoleta += prod.precio;
+            });
+
+            console.log("------------------------------------------");
+            console.log(`TOTAL PAGADO: $${totalBoleta.toLocaleString('en-US')} USD`);
+            console.log("==========================================");
+            console.log("¡Gracias por tu compra en The Reyes Records!");
+
+            mostrarAlertaCarrito(`¡Gracias por tu compra, ${usuarioActivo.nombre}! Pedido procesado con éxito.`, "success");
+            
+            // Vaciamos el carrito y actualizamos la interfaz
+            carrito = [];
+            guardarCarritoStorage();
+            actualizarCarritoUI();
+            
+            // Cerramos el modal después de 2.5 segundos
+            setTimeout(() => {
                 const modalEl = document.getElementById('modalCarrito');
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 if (modal) modal.hide();
+            }, 2500);
+        });
+    }
+
+    // --- 5. REGISTRO DE USUARIO ---
+    const formRegistro = document.getElementById('form-registro');
+    if (formRegistro) {
+        formRegistro.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombreRegistro')?.value.trim();
+            const email = document.getElementById('emailRegistro')?.value.trim();
+            const pass = document.getElementById('passRegistro')?.value;
+            const confirmPass = document.getElementById('confirmPassRegistro')?.value;
+            const contenedorMensaje = document.getElementById('mensaje-status');
+
+            if (pass !== confirmPass) {
+                mostrarMensaje(contenedorMensaje, 'Las contraseñas no coinciden.', 'danger');
+                return;
+            }
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
+            
+            if (usuarios.some(u => u.email === email)) {
+                mostrarMensaje(contenedorMensaje, 'Este correo ya está registrado.', 'warning');
+                return;
+            }
+
+            usuarios.push({ nombre, email, pass });
+            localStorage.setItem('usuarios_reyes', JSON.stringify(usuarios));
+            
+            mostrarMensaje(contenedorMensaje, '¡Registro completado con éxito! Redirigiendo al inicio de sesión...', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        });
+    }
+
+    // --- 6. INICIO DE SESIÓN ---
+    const formLogin = document.getElementById('form-login');
+    if (formLogin) {
+        formLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailLogin')?.value.trim();
+            const pass = document.getElementById('passLogin')?.value;
+            const contenedorMensaje = document.getElementById('mensaje-status');
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
+            const usuarioValido = usuarios.find(u => u.email === email && u.pass === pass);
+
+            if (usuarioValido) {
+                localStorage.setItem('usuarioActivo', JSON.stringify(usuarioValido));
+                mostrarMensaje(contenedorMensaje, `¡Inicio de sesión completado! Bienvenido, ${usuarioValido.nombre}.`, 'success');
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1800);
+            } else {
+                mostrarMensaje(contenedorMensaje, 'Correo o contraseña incorrectos.', 'danger');
             }
         });
     }
+
+    // --- 7. MOSTRAR USUARIO EN LA BARRA DE NAVEGACIÓN ---
+    const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+    if (usuarioActivo) {
+        const btnLogin = document.querySelector('a[href="login.html"]');
+        const btnRegistro = document.querySelector('a[href="registro.html"]');
+        
+        if (btnLogin) {
+            btnLogin.innerHTML = `<i class="bi bi-person-check-fill"></i> ${usuarioActivo.nombre}`;
+            btnLogin.href = '#';
+        }
+        if (btnRegistro) {
+            btnRegistro.textContent = 'Cerrar Sesión';
+            btnRegistro.href = '#';
+            btnRegistro.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('usuarioActivo');
+                window.location.reload();
+            });
+        }
+    }
 });
+
+// --- FUNCIONES AUXILIARES ---
 
 // Función para guardar el estado actual del carrito en localStorage
 function guardarCarritoStorage() {
@@ -258,116 +365,57 @@ function activarEventosTarjetas() {
     });
 }
 
+// FUNCIÓN PARA MOSTRAR LA ALERTA DE FORMULARIOS
+function mostrarMensaje(contenedor, mensaje, tipo) {
+    if (!contenedor) return;
 
+    const esExito = tipo === 'success';
+    const colorBorde = esExito ? '#d4af37' : '#dc3545';
+    const colorTexto = esExito ? '#f1c40f' : '#ff6b6b';
+    const colorSombra = esExito ? 'rgba(212, 175, 55, 0.25)' : 'rgba(220, 53, 69, 0.25)';
 
+    contenedor.innerHTML = `
+        <div class="p-3 my-3 text-center fw-bold rounded" style="
+            background-color: rgba(10, 10, 10, 0.95);
+            border: 1px solid ${colorBorde};
+            color: ${colorTexto};
+            box-shadow: 0 0 15px ${colorSombra};
+            letter-spacing: 0.5px;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+        ">
+            ${mensaje}
+        </div>
+    `;
+}
 
+// FUNCIÓN PARA MOSTRAR ALERTAS ESTILIZADAS DENTRO DEL MODAL DEL CARRITO
+function mostrarAlertaCarrito(mensaje, tipo) {
+    let modalBody = document.querySelector('#modalCarrito .modal-body');
+    if (!modalBody) return;
 
+    let alertaAntigua = modalBody.querySelector('.alerta-carrito-custom');
+    if (alertaAntigua) alertaAntigua.remove();
 
-document.addEventListener('DOMContentLoaded', () => {
+    const esExito = tipo === 'success';
+    const esWarning = tipo === 'warning';
+    
+    const colorBorde = esExito ? '#d4af37' : (esWarning ? '#ffc107' : '#dc3545');
+    const colorTexto = esExito ? '#f1c40f' : (esWarning ? '#ffda6a' : '#ff6b6b');
+    const colorSombra = esExito ? 'rgba(212, 175, 55, 0.25)' : 'rgba(220, 53, 69, 0.25)';
 
-    // 1. REGISTRO DE USUARIO
-    const formRegistro = document.getElementById('form-registro');
-    if (formRegistro) {
-        formRegistro.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const nombre = document.getElementById('nombreRegistro')?.value.trim();
-            const email = document.getElementById('emailRegistro')?.value.trim();
-            const pass = document.getElementById('passRegistro')?.value;
-            const confirmPass = document.getElementById('confirmPassRegistro')?.value;
-            const contenedorMensaje = document.getElementById('mensaje-status');
+    const divAlerta = document.createElement('div');
+    divAlerta.className = 'alerta-carrito-custom p-3 my-2 text-center fw-bold rounded';
+    divAlerta.style.cssText = `
+        background-color: rgba(10, 10, 10, 0.95);
+        border: 1px solid ${colorBorde};
+        color: ${colorTexto};
+        box-shadow: 0 0 15px ${colorSombra};
+        letter-spacing: 0.5px;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    `;
+    divAlerta.innerText = mensaje;
 
-            if (pass !== confirmPass) {
-                mostrarMensaje(contenedorMensaje, 'Las contraseñas no coinciden.', 'danger');
-                return;
-            }
-
-            let usuarios = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
-            
-            if (usuarios.some(u => u.email === email)) {
-                mostrarMensaje(contenedorMensaje, 'Este correo ya está registrado.', 'warning');
-                return;
-            }
-
-            usuarios.push({ nombre, email, pass });
-            localStorage.setItem('usuarios_reyes', JSON.stringify(usuarios));
-            
-            mostrarMensaje(contenedorMensaje, '¡Registro completado con éxito! Redirigiendo al inicio de sesión...', 'success');
-
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
-        });
-    }
-
-    // 2. INICIO DE SESIÓN
-    const formLogin = document.getElementById('form-login');
-    if (formLogin) {
-        formLogin.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('emailLogin')?.value.trim();
-            const pass = document.getElementById('passLogin')?.value;
-            const contenedorMensaje = document.getElementById('mensaje-status');
-
-            let usuarios = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
-            const usuarioValido = usuarios.find(u => u.email === email && u.pass === pass);
-
-            if (usuarioValido) {
-                localStorage.setItem('usuarioActivo', JSON.stringify(usuarioValido));
-                mostrarMensaje(contenedorMensaje, `¡Inicio de sesión completado! Bienvenido, ${usuarioValido.nombre}.`, 'success');
-
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1800);
-            } else {
-                mostrarMensaje(contenedorMensaje, 'Correo o contraseña incorrectos.', 'danger');
-            }
-        });
-    }
-
-    // FUNCIÓN PARA MOSTRAR LA ALERTA CON ESTILO THE REYES RECORDS
-    function mostrarMensaje(contenedor, mensaje, tipo) {
-        if (!contenedor) return;
-
-        const esExito = tipo === 'success';
-        const colorBorde = esExito ? '#d4af37' : '#dc3545';
-        const colorTexto = esExito ? '#f1c40f' : '#ff6b6b';
-        const colorSombra = esExito ? 'rgba(212, 175, 55, 0.25)' : 'rgba(220, 53, 69, 0.25)';
-
-        contenedor.innerHTML = `
-            <div class="p-3 my-3 text-center fw-bold rounded" style="
-                background-color: rgba(10, 10, 10, 0.95);
-                border: 1px solid ${colorBorde};
-                color: ${colorTexto};
-                box-shadow: 0 0 15px ${colorSombra};
-                letter-spacing: 0.5px;
-                font-size: 0.88rem;
-                text-transform: uppercase;
-            ">
-                ${mensaje}
-            </div>
-        `;
-    }
-
-    // 3. MOSTRAR USUARIO EN LA BARRA DE NAVEGACIÓN
-    const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
-    if (usuarioActivo) {
-        const btnLogin = document.querySelector('a[href="login.html"]');
-        const btnRegistro = document.querySelector('a[href="registro.html"]');
-        
-        if (btnLogin) {
-            btnLogin.innerHTML = `<i class="bi bi-person-check-fill"></i> ${usuarioActivo.nombre}`;
-            btnLogin.href = '#';
-        }
-        if (btnRegistro) {
-            btnRegistro.textContent = 'Cerrar Sesión';
-            btnRegistro.href = '#';
-            btnRegistro.addEventListener('click', (e) => {
-                e.preventDefault();
-                localStorage.removeItem('usuarioActivo');
-                window.location.reload();
-            });
-        }
-    }
-});
+    modalBody.insertBefore(divAlerta, modalBody.firstChild);
+}
