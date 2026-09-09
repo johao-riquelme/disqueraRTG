@@ -257,6 +257,12 @@ function activarEventosTarjetas() {
         });
     });
 }
+
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. REGISTRO DE USUARIO
