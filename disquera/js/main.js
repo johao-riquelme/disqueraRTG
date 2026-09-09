@@ -257,3 +257,97 @@ function activarEventosTarjetas() {
         });
     });
 }
+document.addEventListener('DOMContentLoaded', () => {
+
+    // 1. REGISTRO DE USUARIO
+    const formRegistro = document.getElementById('form-registro');
+    if (formRegistro) {
+        formRegistro.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombreRegistro')?.value.trim();
+            const email = document.getElementById('emailRegistro')?.value.trim();
+            const pass = document.getElementById('passRegistro')?.value;
+            const confirmPass = document.getElementById('confirmPassRegistro')?.value;
+            const contenedorMensaje = document.getElementById('mensaje-status');
+
+            if (pass !== confirmPass) {
+                mostrarMensaje(contenedorMensaje, 'Las contraseñas no coinciden.', 'danger');
+                return;
+            }
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
+            
+            if (usuarios.some(u => u.email === email)) {
+                mostrarMensaje(contenedorMensaje, 'Este correo ya está registrado.', 'warning');
+                return;
+            }
+
+            usuarios.push({ nombre, email, pass });
+            localStorage.setItem('usuarios_reyes', JSON.stringify(usuarios));
+            
+            mostrarMensaje(contenedorMensaje, '¡Registro completado con éxito! Redirigiendo al inicio de sesión...', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        });
+    }
+
+    // 2. INICIO DE SESIÓN
+    const formLogin = document.getElementById('form-login');
+    if (formLogin) {
+        formLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailLogin')?.value.trim();
+            const pass = document.getElementById('passLogin')?.value;
+            const contenedorMensaje = document.getElementById('mensaje-status');
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
+            const usuarioValido = usuarios.find(u => u.email === email && u.pass === pass);
+
+            if (usuarioValido) {
+                localStorage.setItem('usuarioActivo', JSON.stringify(usuarioValido));
+                mostrarMensaje(contenedorMensaje, `¡Inicio de sesión completado! Bienvenido, ${usuarioValido.nombre}.`, 'success');
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1800);
+            } else {
+                mostrarMensaje(contenedorMensaje, 'Correo o contraseña incorrectos.', 'danger');
+            }
+        });
+    }
+
+    // FUNCIÓN PARA MOSTRAR LA ALERTA VISUAL
+    function mostrarMensaje(contenedor, mensaje, tipo) {
+        if (!contenedor) return;
+        contenedor.innerHTML = `
+            <div class="alert alert-${tipo} border-gold text-center mt-3" role="alert">
+                ${mensaje}
+            </div>
+        `;
+    }
+
+    // 3. MOSTRAR USUARIO EN LA BARRA DE NAVEGACIÓN
+    const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+    if (usuarioActivo) {
+        const btnLogin = document.querySelector('a[href="login.html"]');
+        const btnRegistro = document.querySelector('a[href="registro.html"]');
+        
+        if (btnLogin) {
+            btnLogin.innerHTML = `<i class="bi bi-person-check-fill"></i> ${usuarioActivo.nombre}`;
+            btnLogin.href = '#';
+        }
+        if (btnRegistro) {
+            btnRegistro.textContent = 'Cerrar Sesión';
+            btnRegistro.href = '#';
+            btnRegistro.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('usuarioActivo');
+                window.location.reload();
+            });
+        }
+    }
+});
