@@ -1,0 +1,62 @@
+{
+  "microfonos": [
+    {
+      "id": 1,
+      "nombre": "Neumann U 87 Ai",
+      "precio": 3750,
+      "imagen": "img/micro1.jpg",
+      "descripcion": "El rey indiscutible de los estudios comerciales para voces principales, locución y orquestas.\n\nCaracterísticas: Tres patrones polares (cardioide, omni, figura 8), atenuador de -10 dB, rango de 20Hz-20kHz y fabricación artesanal en Alemania."
+    },
+    {
+      "id": 2,
+      "nombre": "AKG C414 XLII",
+      "precio": 1299,
+      "imagen": "img/micro2.jpg",
+      "descripcion": "El micrófono multipatrón más versátil del mercado, ideal para pianos, guitarras acústicas, coros y overheads de batería.\n\nCaracterísticas: 9 patrones polares seleccionables, 3 niveles de atenuación y 3 filtros de corte de graves."
+    },
+    {
+      "id": 3,
+      "nombre": "Telefunken TF51",
+      "precio": 1895,
+      "imagen": "img/micro3.jpg",
+      "descripcion": "Voces principales de alta gama, guitarras acústicas, mandolinas y overheads de batería.\n\nCaracterísticas: Es un micrófono de tubo (valvular) que recrea el sonido clásico de los legendarios Telefunken ELA M 251 y AKG C12."
+    },
+    {
+      "id": 4,
+      "nombre": "Manley Reference Cardioid",
+      "precio": 2999,
+      "imagen": "img/micro4.jpg",
+      "descripcion": "El estándar moderno para voces principales en Pop, R&B, Rap y música urbana comercial.\n\nCaracterísticas: Patrón polar cardioide, circuito de tubo de vacío (válvula 12AT7) con riqueza armónica inigualable."
+    }
+  ],
+  "interfaces": [
+    {
+      "id": 5,
+      "nombre": "Apollo Twin X Gen 2",
+      "precio": 2899,
+      "imagen": "img/interfaz1.jpg",
+      "descripcion": "El centro de control moderno de la mayoría de los estudios profesionales y comerciales.\n\nCaracterísticas: Conectividad Thunderbolt 3, conversión de 'Clase Elite' y procesamiento HEXA Core (DSP) integrado."
+    },
+    {
+      "id": 6,
+      "nombre": "Apogee Symphony Desktop",
+      "precio": 1499,
+      "imagen": "img/interfaz2.jpg",
+      "descripcion": "Interfaz de escritorio de gama alta con la mítica conversión AD/DA de Apogee.\n\nCaracterísticas: Pantalla táctil intuitiva, DSP en tiempo real y componentes de nivel de estudio de masterización."
+    },
+    {
+      "id": 7,
+      "nombre": "Neumann MT 48 U",
+      "precio": 1895,
+      "imagen": "img/interfaz3.jpg",
+      "descripcion": "La primera interfaz desarrollada por Neumann junto a Merging Technologies.\n\nCaracterísticas: Preamplificadores ultra limpios con un impresionante rango dinámico de 136 dB y pantalla táctil a color."
+    },
+    {
+      "id": 8,
+      "nombre": "Prism Sound Lyra 2",
+      "precio": 2999,
+      "imagen": "img/interfaz4.jpg",
+      "descripcion": "Convertidor de referencia absoluta para estudios de mezcla y masterización crítica.\n\nCaracterísticas: Calidad de sonido impecable con la legendaria conversión de Prism Sound y conectividad USB rápida."
+    }
+  ]
+}

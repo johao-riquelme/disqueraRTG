@@ -6,12 +6,13 @@
     <title>SERVICIOS - THE REYES RECORDS</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-transparent py-3 fixed-top">
-  <div class="container-fluid">
+  <div class="container-fluid px-4"> 
     <a class="navbar-brand brand-title" href="index.html">THE REYES RECORDS</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -19,14 +20,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link active" href="servicios.html">Servicios</a></li>
+        <li class="nav-item"><a class="nav-link active gold-title" aria-current="page" href="servicios.html">Servicios</a></li>
         <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
         <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
         <li class="nav-item"><a class="nav-link" href="albunes.html">Álbumes</a></li>
       </ul>
-      <button class="btn btn-outline-warning ms-auto" data-bs-toggle="modal" data-bs-target="#modalCarrito">
-        🛒 Carrito Disquero (<span id="cart-count">0</span>)
-      </button>
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <!-- AQUÍ ESTÁ EL CAMBIO: Se agregó el ícono y la clase text-warning -->
+        <a class="nav-link text-warning fw-bold" href="login.html"><i class="bi bi-person-circle"></i> Iniciar Sesión</a>
+        <a class="nav-link text-light" href="registro.html">Registrarse</a>
+        <button class="btn btn-outline-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+          🛒 Carrito (<span id="cart-count">0</span>)
+        </button>
+      </div>
     </div>
   </div>
 </nav>
@@ -39,87 +45,7 @@
       <hr class="divider mx-auto my-4">
     </div>
 
-    <div class="row g-4 justify-content-center">
-      <!-- PLAN BASICO -->
-      <div class="col-12 col-sm-6 col-md-3 d-flex justify-content-center">
-        <div class="card rr disco-card h-100" style="width: 18rem;" 
-             data-bs-toggle="modal" 
-             data-bs-target="#modalDetalleDisco"
-             onclick="prepararModal('Plan Básico', '50', 'img/planB.png', 'Ideal para artistas emergentes. Incluye 4 horas semanales de grabación en estudio profesional y asesoría legal básica para proteger tus temas.')">
-          <img src="img/planB.png" class="card-img-top p-2" alt="Plan Básico">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title">Plan Básico</h5>
-              <p class="card-text text-truncate">Ideal para artistas emergentes. Incluye 4 horas semanales...</p>
-              <p class="card-text mb-3"><strong>Valor $50,00</strong></p>
-            </div>
-            <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Básico" data-precio="50">
-              Agregar al Carrito
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- PLAN PREMIUM -->
-      <div class="col-12 col-sm-6 col-md-3 d-flex justify-content-center">
-        <div class="card rr disco-card h-100" style="width: 18rem;" 
-             data-bs-toggle="modal" 
-             data-bs-target="#modalDetalleDisco"
-             onclick="prepararModal('Plan Premium', '70', 'img/planP.png', 'Perfecto para potenciar tu talento. Incluye 4 horas de grabación con asistencia técnica de un productor y un taller guiado sobre la industria musical.')">
-          <img src="img/planP.png" class="card-img-top p-2" alt="Plan Premium">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title">Plan Premium</h5>
-              <p class="card-text text-truncate">Perfecto para potenciar tu talento. Incluye 4 horas...</p>
-              <p class="card-text mb-3"><strong>Valor $70,00</strong></p>
-            </div>
-            <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Premium" data-precio="70">
-              Agregar al Carrito
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- PLAN GOLD -->
-      <div class="col-12 col-sm-6 col-md-3 d-flex justify-content-center">
-        <div class="card rr disco-card h-100" style="width: 18rem;" 
-             data-bs-toggle="modal" 
-             data-bs-target="#modalDetalleDisco"
-             onclick="prepararModal('Plan Gold', '85', 'img/planG.png', 'Producción musical avanzada. Incluye horas de estudio, mezcla, masterización profesional y distribución digital en las principales plataformas.')">
-          <img src="img/planG.png" class="card-img-top p-2" alt="Plan Gold">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title">Plan Gold</h5>
-              <p class="card-text text-truncate">Producción musical avanzada. Incluye horas de estudio...</p>
-              <p class="card-text mb-3"><strong>Valor $85,00</strong></p>
-            </div>
-            <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Gold" data-precio="85">
-              Agregar al Carrito
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- PLAN DELUXE -->
-      <div class="col-12 col-sm-6 col-md-3 d-flex justify-content-center">
-        <div class="card rr disco-card h-100" style="width: 18rem;" 
-             data-bs-toggle="modal" 
-             data-bs-target="#modalDetalleDisco"
-             onclick="prepararModal('Plan Deluxe', '180', 'img/planD.png', 'La experiencia completa de la disquera. Todo incluido: producción total, mezcla, máster, distribución global y estrategia publicitaria para tu lanzamiento.')">
-          <img src="img/planD.png" class="card-img-top p-2" alt="Plan Deluxe">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title">Plan Deluxe</h5>
-              <p class="card-text text-truncate">La experiencia completa de la disquera. Todo incluido...</p>
-              <p class="card-text mb-3"><strong>Valor $180,00</strong></p>
-            </div>
-            <button type="button" class="btn btn-warning w-100 btn-agregar" data-nombre="Plan Deluxe" data-precio="180">
-              Agregar al Carrito
-            </button>
-          </div>
-        </div>
-      </div>
-
+    <div class="row g-4 justify-content-center" id="contenedor-planes">
     </div>
   </div>
 </div>
@@ -144,6 +70,58 @@
     </div>
   </div>
 </div>
+<footer class="footer-reyes py-5 border-top border-secondary">
+  <div class="container">
+    <div class="row g-4 text-start">
+      
+      <div class="col-12 col-md-4">
+        <h4 class="brand-title gold-title mb-3">THE REYES RECORDS</h4>
+        <p class="text-light fs-6 pe-md-3">
+          Unimos por la lealtad, el estilo y la fuerza musical. Impulsamos el talento independiente con distribución oficial y producciones de nivel internacional.
+        </p>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <h5 class="gold-title fw-bold mb-3">Sobre Nosotros</h5>
+        <ul class="list-unstyled footer-links">
+          <li class="mb-2"><a href="index.html" class="text-light text-decoration-none">Nuestra Historia</a></li>
+          <li class="mb-2"><a href="servicios.html" class="text-light text-decoration-none">Servicios de Estudio</a></li>
+          <li class="mb-2"><a href="albunes.html" class="text-light text-decoration-none">Álbumes Liderados</a></li>
+          <li class="mb-2"><a href="blogs.html" class="text-light text-decoration-none">Noticias & Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-2">
+        <h5 class="gold-title fw-bold mb-3">Legal</h5>
+        <ul class="list-unstyled footer-links">
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none">Derechos y Regalías</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none">Términos del Servicio</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none">Políticas de Privacidad</a></li>
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <h5 class="gold-title fw-bold mb-3">Contacto</h5>
+        <p class="text-light mb-1"><i class="bi bi-geo-alt-fill text-warning me-2"></i> Santiago, Chile</p>
+        <p class="text-light mb-1"><i class="bi bi-envelope-fill text-warning me-2"></i> contacto@thereyesrecords.cl</p>
+        <p class="text-light mb-3"><i class="bi bi-telephone-fill text-warning me-2"></i> +56 9 1234 5678</p>
+        
+        <div class="d-flex gap-3 fs-4">
+          <a href="#" class="text-warning"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-warning"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="text-warning"><i class="bi bi-spotify"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary my-4">
+
+    <div class="text-center text-secondary small">
+      <p class="mb-0">&copy; 2026 The Reyes Records. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
 
 <!-- MODAL CARRITO -->
 <div class="modal fade" id="modalCarrito" tabindex="-1" aria-hidden="true">

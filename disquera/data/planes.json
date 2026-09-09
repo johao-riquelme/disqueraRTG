@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nombre": "Plan Básico",
+    "precio": "50",
+    "imagen": "img/planB.png",
+    "descripcion": "Ideal para artistas emergentes. Incluye 4 horas semanales de grabación en estudio profesional y asesoría legal básica para proteger tus temas."
+  },
+  {
+    "id": 2,
+    "nombre": "Plan Premium",
+    "precio": "70",
+    "imagen": "img/planP.png",
+    "descripcion": "Perfecto para potenciar tu talento. Incluye 4 horas de grabación con asistencia técnica de un productor y un taller guiado sobre la industria musical."
+  },
+  {
+    "id": 3,
+    "nombre": "Plan Gold",
+    "precio": "85",
+    "imagen": "img/planG.png",
+    "descripcion": "Producción musical avanzada. Incluye horas de estudio, mezcla, masterización profesional y distribución digital en las principales plataformas."
+  },
+  {
+    "id": 4,
+    "nombre": "Plan Deluxe",
+    "precio": "180",
+    "imagen": "img/planD.png",
+    "descripcion": "La experiencia completa de la disquera. Todo incluido: producción total, mezcla, máster, distribución global y estrategia publicitaria para tu lanzamiento."
+  }
+]

@@ -7,16 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Renderizar los productos que ya estaban guardados previamente
     actualizarCarritoUI();
 
-    // 2. Asignar evento 'click' a los botones "Agregar al Carrito" directos
-    const botonesAgregar = document.querySelectorAll('.btn-agregar');
-    botonesAgregar.forEach(boton => {
-        boton.addEventListener('click', (e) => {
-            e.stopPropagation(); // Evita abrir el modal al presionar directamente el botón
-            const nombre = boton.getAttribute('data-nombre');
-            const precio = parseFloat(boton.getAttribute('data-precio'));
-            agregarAlCarrito(nombre, precio);
-        });
-    });
+    // 2. VERIFICAR: En qué página estamos para cargar el JSON correspondiente
+    const contenedorPlanes = document.getElementById('contenedor-planes');
+    const contenedorMicrofonos = document.getElementById('contenedor-microfonos');
+
+    if (contenedorPlanes) {
+        cargarPlanes();
+    } else if (contenedorMicrofonos) {
+        cargarProductos();
+    }
 
     // 3. Asignar evento al botón "Agregar al Carrito" dentro del Modal de detalle
     const btnModal = document.getElementById('btnAgregarDesdeModal');
@@ -28,17 +27,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Asignar evento al botón Proceder al Pago
+ // 4. Asignar evento al botón Proceder al Pago
     const btnPagar = document.getElementById('btn-pagar');
     if (btnPagar) {
         btnPagar.addEventListener('click', () => {
             if (carrito.length === 0) {
                 alert("Tu carrito está vacío.");
             } else {
-                alert("¡Gracias por tu compra! Tu orden ha sido procesada.");
+                // Generamos la boleta en la consola al presionar pagar
+                console.clear(); // Limpia la consola opcionalmente para que se vea ordenado
+                console.log("       THE REYES RECORDS");
+                console.log("========================================");
+                
+                let totalBoleta = 0;
+                carrito.forEach((prod, index) => {
+                    console.log(`${index + 1}. ${prod.nombre} ---- $${prod.precio.toLocaleString('en-US')} USD`);
+                    totalBoleta += prod.precio;
+                });
+
+                console.log("------------------------------------------");
+                console.log(`TOTAL PAGADO: $${totalBoleta.toLocaleString('en-US')} USD`);
+                console.log("==========================================");
+                console.log("¡Gracias por tu compra en The Reyes Records!");
+
+                alert("¡Gracias por tu compra! Tu orden ha sido procesada con éxito.");
+                
+                // Vaciamos el carrito y actualizamos la interfaz
                 carrito = [];
                 guardarCarritoStorage();
                 actualizarCarritoUI();
+                
+                // Cerramos el modal del carrito
                 const modalEl = document.getElementById('modalCarrito');
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 if (modal) modal.hide();
@@ -52,7 +71,7 @@ function guardarCarritoStorage() {
     localStorage.setItem('carrito_reyes', JSON.stringify(carrito));
 }
 
-// Función invocada desde el atributo onclick de la tarjeta
+// Función invocada para actualizar el modal
 function prepararModal(nombre, precio, imagenUrl, descripcion) {
     const floatPrecio = parseFloat(precio);
     productoSeleccionadoModal = { nombre, precio: floatPrecio };
@@ -66,7 +85,7 @@ function prepararModal(nombre, precio, imagenUrl, descripcion) {
 // Función para añadir productos al array
 function agregarAlCarrito(nombre, precio) {
     carrito.push({ nombre, precio });
-    guardarCarritoStorage(); // Persistir cambios
+    guardarCarritoStorage();
     actualizarCarritoUI();
 }
 
@@ -100,6 +119,141 @@ function actualizarCarritoUI() {
 // Función para remover un producto del carrito según su índice
 function eliminarDelCarrito(index) {
     carrito.splice(index, 1);
-    guardarCarritoStorage(); // Persistir cambios
+    guardarCarritoStorage();
     actualizarCarritoUI();
+}
+
+// --- CARGAR EL JSON DE PLANES (Servicios) ---
+async function cargarPlanes() {
+    try {
+        const respuesta = await fetch(`data/planes.json?v=${new Date().getTime()}`);
+        const planes = await respuesta.json();
+        
+        const contenedor = document.getElementById('contenedor-planes');
+        let htmlPlanes = '';
+
+        planes.forEach(plan => {
+            htmlPlanes += `
+                <div class="col-12 col-sm-6 col-md-3 d-flex justify-content-center">
+                    <div class="card rr disco-card h-100 tarjeta-modal" style="width: 18rem; cursor: pointer;" 
+                         data-nombre="${plan.nombre}"
+                         data-precio="${plan.precio}"
+                         data-imagen="${plan.imagen}"
+                         data-descripcion="${plan.descripcion}">
+                        <img src="${plan.imagen}" class="card-img-top p-2" alt="${plan.nombre}">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="card-title">${plan.nombre}</h5>
+                                <p class="card-text mb-3"><strong>Valor $${plan.precio}</strong></p>
+                            </div>
+                            <button type="button" class="btn btn-warning w-100 btn-agregar" 
+                                    data-nombre="${plan.nombre}" 
+                                    data-precio="${plan.precio}">
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        contenedor.innerHTML = htmlPlanes;
+        activarEventosTarjetas();
+
+    } catch (error) {
+        console.error('Hubo un error cargando los planes:', error);
+    }
+}
+
+// --- CARGAR EL JSON DE PRODUCTOS (Micrófonos e Interfaces) ---
+async function cargarProductos() {
+    try {
+        const respuesta = await fetch(`data/productos.json?v=${new Date().getTime()}`);
+        const data = await respuesta.json();
+        
+        const contenedorMics = document.getElementById('contenedor-microfonos');
+        const contenedorInts = document.getElementById('contenedor-interfaces');
+        
+        let htmlMics = '';
+        let htmlInts = '';
+
+        data.microfonos.forEach(prod => {
+            htmlMics += generarTemplateProducto(prod);
+        });
+
+        data.interfaces.forEach(prod => {
+            htmlInts += generarTemplateProducto(prod);
+        });
+
+        if (contenedorMics) contenedorMics.innerHTML = htmlMics;
+        if (contenedorInts) contenedorInts.innerHTML = htmlInts;
+
+        activarEventosTarjetas();
+
+    } catch (error) {
+        console.error('Error cargando los productos:', error);
+    }
+}
+
+// Plantilla HTML compartida para las tarjetas de productos
+function generarTemplateProducto(prod) {
+    return `
+        <div class="col-xl-6">
+            <div class="card text-white rr h-100 tarjeta-modal" style="cursor: pointer;" 
+                 data-nombre="${prod.nombre}"
+                 data-precio="${prod.precio}"
+                 data-imagen="${prod.imagen}"
+                 data-descripcion="${prod.descripcion}">
+                <div class="row g-0 h-100">
+                    <div class="col-md-5">
+                        <img src="${prod.imagen}" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="${prod.nombre}">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body d-flex flex-column h-100 text-start">
+                            <h5 class="card-title text-warning fw-bold">${prod.nombre}</h5>
+                            <div class="mt-auto">
+                                <p class="card-text mb-2"><strong>Valor $${typeof prod.precio === 'number' ? prod.precio.toLocaleString('en-US') : prod.precio} USD</strong></p>
+                                <button type="button" class="btn btn-warning w-100 fw-bold btn-agregar" 
+                                        data-nombre="${prod.nombre}" 
+                                        data-precio="${prod.precio}">
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// --- ACTIVAR EVENTOS DE FORMA SEGURA Y MANUAL ---
+function activarEventosTarjetas() {
+    const botonesAgregar = document.querySelectorAll('.btn-agregar');
+    botonesAgregar.forEach(boton => {
+        boton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const nombre = boton.getAttribute('data-nombre');
+            const precio = parseFloat(boton.getAttribute('data-precio'));
+            agregarAlCarrito(nombre, precio);
+        });
+    });
+
+    const tarjetasModal = document.querySelectorAll('.tarjeta-modal');
+    tarjetasModal.forEach(tarjeta => {
+        tarjeta.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-agregar')) return;
+
+            const nombre = tarjeta.getAttribute('data-nombre');
+            const precio = tarjeta.getAttribute('data-precio');
+            const imagen = tarjeta.getAttribute('data-imagen');
+            const descripcion = tarjeta.getAttribute('data-descripcion');
+            
+            prepararModal(nombre, precio, imagen, descripcion);
+
+            const modalEl = document.getElementById('modalDetalleDisco');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        });
+    });
 }

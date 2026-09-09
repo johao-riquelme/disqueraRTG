@@ -4,23 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CONTACTO - The Reyes Records</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Mismas fuentes unificadas idénticas a Servicios y el Index -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-
- 
-      
-
-
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body>
 
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-transparent py-3 fixed-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">THE REYES RECORDS</a>
+  <div class="container-fluid px-4"> 
+    <a class="navbar-brand brand-title" href="index.html">THE REYES RECORDS</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -29,22 +24,25 @@
         <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
         <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
         <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-        <li class="nav-item"><a class="nav-link active" aria-current="page" href="contacto.html">Contacto</a></li>
+        <li class="nav-item"><a class="nav-link active gold-title" aria-current="page" href="contacto.html">Contacto</a></li>
         <li class="nav-item"><a class="nav-link" href="albunes.html">Álbumes</a></li>
-
-        
       </ul>
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <a class="nav-link fw-bold" href="login.html"><i class="bi bi-person-circle"></i> Iniciar Sesión</a>
+        <a class="nav-link text-light" href="registro.html">Registrarse</a>
+        <button class="btn btn-outline-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalCarrito">
+          🛒 Carrito (<span id="cart-count">0</span>)
+        </button>
+      </div>
     </div>
   </div>
 </nav>
-
 
 <main class="fondo-hero d-flex align-items-center justify-content-center min-vh-100 py-5">
   <div class="container-fluid px-lg-5 mt-5">
 
     <div class="row justify-content-between align-items-center g-5 px-lg-4">
       
-
       <div class="col-lg-5 text-white pe-lg-4">
         <div class="p-4 p-md-5 rounded-4 shadow-lg rr">
           <h2 class="text-warning fw-bold mb-3 gold-title" style="font-family: 'Cinzel', serif;">THE REYES RECORDS</h2>
@@ -76,7 +74,6 @@
         </div>
       </div>
 
-
       <div class="col-lg-6 ps-lg-4 ">
         <div class="card text-white border-0 shadow-lg p-4 p-md-5 rounded-4 rr">
           <h3 class="fw-bold mb-4 text-center gold-title ">Envíanos un mensaje</h3>
@@ -105,6 +102,83 @@
     </div>
   </div>
 </main>
+<footer class="footer-reyes py-5 border-top border-secondary">
+  <div class="container">
+    <div class="row g-4 text-start">
+      
+      <div class="col-12 col-md-4">
+        <h4 class="brand-title gold-title mb-3">THE REYES RECORDS</h4>
+        <p class="text-light fs-6 pe-md-3">
+          Unimos por la lealtad, el estilo y la fuerza musical. Impulsamos el talento independiente con distribución oficial y producciones de nivel internacional.
+        </p>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <h5 class="gold-title fw-bold mb-3">Sobre Nosotros</h5>
+        <ul class="list-unstyled footer-links">
+          <li class="mb-2"><a href="index.html" class="text-light text-decoration-none">Nuestra Historia</a></li>
+          <li class="mb-2"><a href="servicios.html" class="text-light text-decoration-none">Servicios de Estudio</a></li>
+          <li class="mb-2"><a href="albunes.html" class="text-light text-decoration-none">Álbumes Liderados</a></li>
+          <li class="mb-2"><a href="blogs.html" class="text-light text-decoration-none">Noticias & Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-2">
+        <h5 class="gold-title fw-bold mb-3">Legal</h5>
+        <ul class="list-unstyled footer-links">
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none">Derechos y Regalías</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none">Términos del Servicio</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none">Políticas de Privacidad</a></li>
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <h5 class="gold-title fw-bold mb-3">Contacto</h5>
+        <p class="text-light mb-1"><i class="bi bi-geo-alt-fill text-warning me-2"></i> Santiago, Chile</p>
+        <p class="text-light mb-1"><i class="bi bi-envelope-fill text-warning me-2"></i> contacto@thereyesrecords.cl</p>
+        <p class="text-light mb-3"><i class="bi bi-telephone-fill text-warning me-2"></i> +56 9 1234 5678</p>
+        
+        <div class="d-flex gap-3 fs-4">
+          <a href="#" class="text-warning"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-warning"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="text-warning"><i class="bi bi-spotify"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary my-4">
+
+    <div class="text-center text-secondary small">
+      <p class="mb-0">&copy; 2026 The Reyes Records. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL CARRITO DE COMPRAS -->
+<div class="modal fade" id="modalCarrito" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rr text-light border-gold">
+      <div class="modal-header border-bottom border-secondary">
+        <h5 class="modal-title gold-title">Tu Carrito de Compras</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul id="lista-carrito" class="list-group list-group-flush mb-3"></ul>
+        <div class="d-flex justify-content-between fw-bold fs-5">
+          <span>Total:</span>
+          <span class="gold-title">$<span id="total-carrito">0.00</span> USD</span>
+        </div>
+      </div>
+      <div class="modal-footer border-top border-secondary">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning fw-bold" id="btn-pagar">Proceder al Pago</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
 
 </body>
 </html>
