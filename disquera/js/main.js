@@ -144,7 +144,7 @@ async function cargarPlanes() {
                         <div class="card-body d-flex flex-column justify-content-between">
                             <div>
                                 <h5 class="card-title">${plan.nombre}</h5>
-                                <p class="card-text mb-3"><strong>Valor $${plan.precio}</strong></p>
+                                <p class="card-text mb-3"><strong>Valor $${typeof plan.precio === 'number' ? plan.precio.toLocaleString('en-US') : plan.precio} USD</strong></p>
                             </div>
                             <button type="button" class="btn btn-warning w-100 btn-agregar" 
                                     data-nombre="${plan.nombre}" 
