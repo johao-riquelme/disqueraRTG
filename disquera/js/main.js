@@ -320,11 +320,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // FUNCIÓN PARA MOSTRAR LA ALERTA VISUAL
+    // FUNCIÓN PARA MOSTRAR LA ALERTA CON ESTILO THE REYES RECORDS
     function mostrarMensaje(contenedor, mensaje, tipo) {
         if (!contenedor) return;
+
+        const esExito = tipo === 'success';
+        const colorBorde = esExito ? '#d4af37' : '#dc3545';
+        const colorTexto = esExito ? '#f1c40f' : '#ff6b6b';
+        const colorSombra = esExito ? 'rgba(212, 175, 55, 0.25)' : 'rgba(220, 53, 69, 0.25)';
+
         contenedor.innerHTML = `
-            <div class="alert alert-${tipo} border-gold text-center mt-3" role="alert">
+            <div class="p-3 my-3 text-center fw-bold rounded" style="
+                background-color: rgba(10, 10, 10, 0.95);
+                border: 1px solid ${colorBorde};
+                color: ${colorTexto};
+                box-shadow: 0 0 15px ${colorSombra};
+                letter-spacing: 0.5px;
+                font-size: 0.88rem;
+                text-transform: uppercase;
+            ">
                 ${mensaje}
             </div>
         `;
