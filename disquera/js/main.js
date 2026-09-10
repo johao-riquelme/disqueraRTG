@@ -1,13 +1,10 @@
-// 1. Cargar el carrito guardado en localStorage (o iniciar un arreglo vacío si no existe nada)
 let carrito = JSON.parse(localStorage.getItem('carrito_reyes')) || [];
 let productoSeleccionadoModal = null;
 
-// Espera a que se cargue la estructura del DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // Renderizar los productos que ya estaban guardados previamente
+
     actualizarCarritoUI();
 
-    // 2. VERIFICAR: En qué página estamos para cargar el JSON correspondiente
     const contenedorPlanes = document.getElementById('contenedor-planes');
     const contenedorMicrofonos = document.getElementById('contenedor-microfonos');
 
@@ -17,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cargarProductos();
     }
 
-    // 3. Asignar evento al botón "Agregar al Carrito" dentro del Modal de detalle
     const btnModal = document.getElementById('btnAgregarDesdeModal');
     if (btnModal) {
         btnModal.addEventListener('click', () => {
@@ -27,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Asignar evento al botón Proceder al Pago (Con validación y mensaje integrado en el modal)
     const btnPagar = document.getElementById('btn-pagar');
     if (btnPagar) {
         btnPagar.addEventListener('click', () => {
@@ -36,14 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Verificar si hay una sesión activa de usuario
             const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
 
             if (!usuarioActivo) {
-                // Muestra el mensaje directamente dentro del modal del carrito
+
                 mostrarAlertaCarrito("Debes iniciar sesión para poder procesar tu compra. Redirigiendo...", "danger");
 
-                // Espera 2 segundos para que el usuario lea el mensaje antes de enviarlo al login
                 setTimeout(() => {
                     const modalEl = document.getElementById('modalCarrito');
                     const modal = bootstrap.Modal.getInstance(modalEl);
@@ -53,8 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
                 return;
             }
-
-            // Generamos la boleta en la consola al presionar pagar
             console.clear(); 
             console.log("     THE REYES RECORDS");
             console.log("========================================");
@@ -73,13 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("¡Gracias por tu compra en The Reyes Records!");
 
             mostrarAlertaCarrito(`¡Gracias por tu compra, ${usuarioActivo.nombre}! Pedido procesado con éxito.`, "success");
-            
-            // Vaciamos el carrito y actualizamos la interfaz
             carrito = [];
             guardarCarritoStorage();
             actualizarCarritoUI();
-            
-            // Cerramos el modal después de 2.5 segundos
+
             setTimeout(() => {
                 const modalEl = document.getElementById('modalCarrito');
                 const modal = bootstrap.Modal.getInstance(modalEl);
@@ -88,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. REGISTRO DE USUARIO ---
     const formRegistro = document.getElementById('form-registro');
     if (formRegistro) {
         formRegistro.addEventListener('submit', (e) => {
@@ -123,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 6. INICIO DE SESIÓN ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
         formLogin.addEventListener('submit', (e) => {
@@ -149,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 7. MOSTRAR USUARIO EN LA BARRA DE NAVEGACIÓN ---
     const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
     if (usuarioActivo) {
         const btnLogin = document.querySelector('a[href="login.html"]');
@@ -171,14 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- FUNCIONES AUXILIARES ---
-
-// Función para guardar el estado actual del carrito en localStorage
 function guardarCarritoStorage() {
     localStorage.setItem('carrito_reyes', JSON.stringify(carrito));
 }
 
-// Función invocada para actualizar el modal
 function prepararModal(nombre, precio, imagenUrl, descripcion) {
     const floatPrecio = parseFloat(precio);
     productoSeleccionadoModal = { nombre, precio: floatPrecio };
@@ -189,14 +170,12 @@ function prepararModal(nombre, precio, imagenUrl, descripcion) {
     document.getElementById('detallePrecio').innerText = `$${floatPrecio.toLocaleString('en-US')} USD`;
 }
 
-// Función para añadir productos al array
 function agregarAlCarrito(nombre, precio) {
     carrito.push({ nombre, precio });
     guardarCarritoStorage();
     actualizarCarritoUI();
 }
 
-// Función para actualizar la interfaz gráfica del Carrito y el Contador
 function actualizarCarritoUI() {
     const countSpan = document.getElementById('cart-count');
     const listaUI = document.getElementById('lista-carrito');
@@ -223,14 +202,13 @@ function actualizarCarritoUI() {
     }
 }
 
-// Función para remover un producto del carrito según su índice
 function eliminarDelCarrito(index) {
     carrito.splice(index, 1);
     guardarCarritoStorage();
     actualizarCarritoUI();
 }
 
-// --- CARGAR EL JSON DE PLANES (Servicios) ---
+
 async function cargarPlanes() {
     try {
         const respuesta = await fetch(`data/planes.json?v=${new Date().getTime()}`);
@@ -272,7 +250,6 @@ async function cargarPlanes() {
     }
 }
 
-// --- CARGAR EL JSON DE PRODUCTOS (Micrófonos e Interfaces) ---
 async function cargarProductos() {
     try {
         const respuesta = await fetch(`data/productos.json?v=${new Date().getTime()}`);
@@ -301,8 +278,6 @@ async function cargarProductos() {
         console.error('Error cargando los productos:', error);
     }
 }
-
-// Plantilla HTML compartida para las tarjetas de productos
 function generarTemplateProducto(prod) {
     return `
         <div class="col-xl-6">
@@ -334,7 +309,6 @@ function generarTemplateProducto(prod) {
     `;
 }
 
-// --- ACTIVAR EVENTOS DE FORMA SEGURA Y MANUAL ---
 function activarEventosTarjetas() {
     const botonesAgregar = document.querySelectorAll('.btn-agregar');
     botonesAgregar.forEach(boton => {
@@ -365,7 +339,6 @@ function activarEventosTarjetas() {
     });
 }
 
-// FUNCIÓN PARA MOSTRAR LA ALERTA DE FORMULARIOS
 function mostrarMensaje(contenedor, mensaje, tipo) {
     if (!contenedor) return;
 
@@ -389,7 +362,6 @@ function mostrarMensaje(contenedor, mensaje, tipo) {
     `;
 }
 
-// FUNCIÓN PARA MOSTRAR ALERTAS ESTILIZADAS DENTRO DEL MODAL DEL CARRITO
 function mostrarAlertaCarrito(mensaje, tipo) {
     let modalBody = document.querySelector('#modalCarrito .modal-body');
     if (!modalBody) return;

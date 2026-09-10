@@ -1,6 +1,3 @@
-/* ==========================================
-   ESTILOS GENERALES Y TIPOGRAFÍA
-   ================================---------- */
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: rgb(0, 0, 0) !important;
@@ -12,9 +9,6 @@ h1, h2, h3, h5, .brand-title {
     letter-spacing: 2px;
 }
 
-/* ==========================================
-   TÍTULOS Y TEXTOS DORADOS
-   ================================---------- */
 .gold-title {
     color: #ffc107 !important;
     text-shadow: 0px 4px 15px rgba(212, 175, 55, 0.3);
@@ -36,9 +30,6 @@ h1, h2, h3, h5, .brand-title {
     filter: brightness(1.2) drop-shadow(0 0 15px #ffd700);
 }
 
-/* ==========================================
-   COMPONENTES Y UTILIDADES
-   ================================---------- */
 .border-gold {
     border: 1px solid #ffc107 !important;
 }
@@ -63,7 +54,6 @@ h1, h2, h3, h5, .brand-title {
     transition: color 0.3s ease;
 }
 
-/* Estilo Glassmorphism / Fondo Oscuro para Tarjetas (.rr) */
 .rr {
     background-color: #121212 !important;
     background: rgba(15, 15, 15, 0.80) !important;
@@ -72,9 +62,6 @@ h1, h2, h3, h5, .brand-title {
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
-/* ==========================================
-   TARJETAS Y CARDS
-   ================================---------- */
 .card { 
     border-radius: 12px;
     overflow: hidden;
@@ -112,9 +99,7 @@ h1, h2, h3, h5, .brand-title {
     transform: scale(1.02);
 }
 
-/* ==========================================
-   SECCIÓN HERO Y FONDOS
-   ================================---------- */
+
 .fondo-hero {
     background-image: url('../img/logo.png');
     background-attachment: fixed;
@@ -123,15 +108,6 @@ h1, h2, h3, h5, .brand-title {
     background-repeat: no-repeat; 
     min-height: 100vh;   
     width: 100%;           
-}
-
-/* =iconos REDES SOCIALES = */
-.color-yt { color: #FF0000 !important; }
-.color-sp { color: #1DB954 !important; }
-.color-ig i {
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .icono-hover {
@@ -149,9 +125,7 @@ h1, h2, h3, h5, .brand-title {
     font-weight: 400 !important;
 }
 
-/* ==========================================
-   MODAL Y DETALLES
-   ================================---------- */
+
 #modalDetalleDisco #detalleImagen {
     max-height: 280px !important;
     width: auto !important;
@@ -161,9 +135,7 @@ h1, h2, h3, h5, .brand-title {
     display: block;
 }
 
-/* ==========================================
-   FOOTER
-   ================================---------- */
+
 .footer-reyes {
     background-color: rgba(10, 10, 10, 0.92);
     backdrop-filter: blur(10px);
@@ -179,7 +151,7 @@ h1, h2, h3, h5, .brand-title {
     transition: all 0.3s ease;
 }
 
-/* Forzar que el menú fluid ocupe el mismo espacio exacto en todas las vistas */
+
 .navbar .container-fluid {
     width: 100% !important;
     padding-left: 30px !important;
