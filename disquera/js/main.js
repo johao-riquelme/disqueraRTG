@@ -2,7 +2,6 @@ let carrito = JSON.parse(localStorage.getItem('carrito_reyes')) || [];
 let productoSeleccionadoModal = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-
     actualizarCarritoUI();
 
     const contenedorPlanes = document.getElementById('contenedor-planes');
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
 
             if (!usuarioActivo) {
-
                 mostrarAlertaCarrito("Debes iniciar sesión para poder procesar tu compra. Redirigiendo...", "danger");
 
                 setTimeout(() => {
@@ -46,8 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
                 return;
             }
+
             console.clear(); 
-            console.log("     THE REYES RECORDS");
+            console.log("    THE REYES RECORDS");
             console.log("========================================");
             console.log(`Cliente: ${usuarioActivo.nombre} (${usuarioActivo.email})`);
             console.log("----------------------------------------");
@@ -123,11 +122,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const usuarioValido = usuarios.find(u => u.email === email && u.pass === pass);
 
             if (usuarioValido) {
+                if (usuarioValido.email === "joh.riquelme@duocuc.cl" || usuarioValido.email === "contacto@thereyesrecords.cl") {
+                    usuarioValido.rol = "administrador";
+                } else {
+                    usuarioValido.rol = "cliente";
+                }
+
                 localStorage.setItem('usuarioActivo', JSON.stringify(usuarioValido));
                 mostrarMensaje(contenedorMensaje, `¡Inicio de sesión completado! Bienvenido, ${usuarioValido.nombre}.`, 'success');
 
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    if (usuarioValido.rol === "administrador") {
+                        window.location.href = 'admin-home.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
                 }, 1800);
             } else {
                 mostrarMensaje(contenedorMensaje, 'Correo o contraseña incorrectos.', 'danger');
@@ -154,7 +163,139 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // --- GESTIÓN DE NUEVO PRODUCTO (ADMIN) ---
+    const formNuevoProducto = document.getElementById('form-nuevo-producto');
+    if (formNuevoProducto) {
+        formNuevoProducto.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const codigo = document.getElementById('codigoProd').value.trim();
+            const nombre = document.getElementById('nombreProd').value.trim();
+            const descripcion = document.getElementById('descProd').value.trim();
+            const precio = parseFloat(document.getElementById('precioProd').value);
+            const stock = parseInt(document.getElementById('stockProd').value);
+            const stockCritico = document.getElementById('stockCriticoProd').value ? parseInt(document.getElementById('stockCriticoProd').value) : 0;
+            const categoria = document.getElementById('categoriaProd').value;
+            const imagen = document.getElementById('imagenProd').value.trim() || 'img/default.jpg';
+            const contenedorMensaje = document.getElementById('mensaje-status-admin');
+
+            if (codigo.length < 3) {
+                mostrarMensajeAdmin(contenedorMensaje, 'El código del producto debe tener al menos 3 caracteres.', 'danger');
+                return;
+            }
+
+            if (isNaN(precio) || precio < 0) {
+                mostrarMensajeAdmin(contenedorMensaje, 'El precio debe ser un número válido mayor o igual a 0.', 'danger');
+                return;
+            }
+
+            if (isNaN(stock) || stock < 0) {
+                mostrarMensajeAdmin(contenedorMensaje, 'El stock debe ser un número entero mayor o igual a 0.', 'danger');
+                return;
+            }
+
+            let productosAdmin = JSON.parse(localStorage.getItem('productos_admin_reyes')) || [];
+
+            if (productosAdmin.some(p => p.codigo === codigo)) {
+                mostrarMensajeAdmin(contenedorMensaje, 'Ya existe un producto registrado con ese código.', 'warning');
+                return;
+            }
+
+            const nuevoProducto = {
+                id: Date.now(),
+                codigo,
+                nombre,
+                descripcion,
+                precio,
+                stock,
+                stockCritico,
+                categoria,
+                imagen
+            };
+
+            productosAdmin.push(nuevoProducto);
+            localStorage.setItem('productos_admin_reyes', JSON.stringify(productosAdmin));
+
+            if (stock <= stockCritico) {
+                console.warn(`Alerta: El producto ${nombre} se encuentra en stock crítico (${stock} unidades).`);
+            }
+
+            mostrarMensajeAdmin(contenedorMensaje, '¡Producto agregado con éxito al inventario!', 'success');
+
+            setTimeout(() => {
+                formNuevoProducto.reset();
+            }, 1500);
+        });
+    }
+
+    // --- RENDERIZAR TABLA DE PRODUCTOS EN EL PANEL DE ADMIN ---
+    const tablaBody = document.getElementById('tabla-productos-body');
+    if (tablaBody) {
+        let productosAdmin = JSON.parse(localStorage.getItem('productos_admin_reyes')) || [];
+        
+        let productosBase = [
+            { codigo: "MIC-01", nombre: "Audio-Technica AT2020", categoria: "microfonos", precio: 99, stock: 12, stockCritico: 3 },
+            { codigo: "MIC-02", nombre: "Shure SM7B", categoria: "microfonos", precio: 399, stock: 8, stockCritico: 2 },
+            { codigo: "INT-01", nombre: "Focusrite Scarlett 2i2", categoria: "interfaces", precio: 179, stock: 10, stockCritico: 3 },
+            { codigo: "INT-02", nombre: "Universal Audio Volt 2", categoria: "interfaces", precio: 189, stock: 6, stockCritico: 2 }
+        ];
+
+        let todosLosProductos = [...productosBase, ...productosAdmin];
+
+        tablaBody.innerHTML = '';
+        todosLosProductos.forEach((prod, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><span class="badge bg-secondary">${prod.codigo || 'S/C'}</span></td>
+                <td class="fw-bold text-warning">${prod.nombre}</td>
+                <td>${prod.categoria}</td>
+                <td>$${typeof prod.precio === 'number' ? prod.precio.toLocaleString('en-US') : prod.precio} USD</td>
+                <td>
+                    <span class="badge ${prod.stock <= (prod.stockCritico || 2) ? 'bg-danger' : 'bg-success'}">
+                        ${prod.stock} un.
+                    </span>
+                </td>
+                <td class="text-center">
+                    ${index >= productosBase.length ? `
+                    <button class="btn btn-sm btn-outline-danger" onclick="eliminarProductoAdmin(${index - productosBase.length})">
+                        <i class="bi bi-trash"></i>
+                    </button>` : `<span class="text-muted small">Sistema</span>`}
+                </td>
+            `;
+            tablaBody.appendChild(tr);
+        });
+    }
+
+    // --- RENDERIZAR TABLA DE USUARIOS EN EL PANEL DE ADMIN ---
+    const tablaUsuariosBody = document.getElementById('tabla-usuarios-body');
+    if (tablaUsuariosBody) {
+        let usuariosAdmin = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
+        
+        if (usuariosAdmin.length === 0) {
+            tablaUsuariosBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">No hay usuarios registrados en el sistema.</td></tr>`;
+        } else {
+            tablaUsuariosBody.innerHTML = '';
+            usuariosAdmin.forEach((usu, index) => {
+                const esAdmin = usu.email === "joh.riquelme@duocuc.cl" || usu.email === "contacto@thereyesrecords.cl";
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="fw-bold text-warning">${usu.nombre || 'Sin Nombre'}</td>
+                    <td>${usu.email}</td>
+                    <td><span class="badge ${esAdmin ? 'bg-warning text-dark' : 'bg-secondary'}">${esAdmin ? 'Administrador' : 'Cliente'}</span></td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-danger" onclick="eliminarUsuarioAdmin(${index})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tablaUsuariosBody.appendChild(tr);
+            });
+        }
+    }
 });
+
+// --- FUNCIONES AUXILIARES ---
 
 function guardarCarritoStorage() {
     localStorage.setItem('carrito_reyes', JSON.stringify(carrito));
@@ -207,7 +348,6 @@ function eliminarDelCarrito(index) {
     guardarCarritoStorage();
     actualizarCarritoUI();
 }
-
 
 async function cargarPlanes() {
     try {
@@ -269,6 +409,16 @@ async function cargarProductos() {
             htmlInts += generarTemplateProducto(prod);
         });
 
+        let productosAdmin = JSON.parse(localStorage.getItem('productos_admin_reyes')) || [];
+        productosAdmin.forEach(prod => {
+            const templateHtml = generarTemplateProducto(prod);
+            if (prod.categoria === 'microfonos') {
+                htmlMics += templateHtml;
+            } else if (prod.categoria === 'interfaces') {
+                htmlInts += templateHtml;
+            }
+        });
+
         if (contenedorMics) contenedorMics.innerHTML = htmlMics;
         if (contenedorInts) contenedorInts.innerHTML = htmlInts;
 
@@ -278,6 +428,7 @@ async function cargarProductos() {
         console.error('Error cargando los productos:', error);
     }
 }
+
 function generarTemplateProducto(prod) {
     return `
         <div class="col-xl-6">
@@ -390,4 +541,43 @@ function mostrarAlertaCarrito(mensaje, tipo) {
     divAlerta.innerText = mensaje;
 
     modalBody.insertBefore(divAlerta, modalBody.firstChild);
+}
+
+function mostrarMensajeAdmin(contenedor, mensaje, tipo) {
+    if (!contenedor) return;
+
+    const esExito = tipo === 'success';
+    const esWarning = tipo === 'warning';
+    
+    const colorBorde = esExito ? '#d4af37' : (esWarning ? '#ffc107' : '#dc3545');
+    const colorTexto = esExito ? '#f1c40f' : (esWarning ? '#ffda6a' : '#ff6b6b');
+    const colorSombra = esExito ? 'rgba(212, 175, 55, 0.25)' : 'rgba(220, 53, 69, 0.25)';
+
+    contenedor.innerHTML = `
+        <div class="p-3 my-3 text-center fw-bold rounded" style="
+            background-color: rgba(10, 10, 10, 0.95);
+            border: 1px solid ${colorBorde};
+            color: ${colorTexto};
+            box-shadow: 0 0 15px ${colorSombra};
+            letter-spacing: 0.5px;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+        ">
+            ${mensaje}
+        </div>
+    `;
+}
+
+function eliminarProductoAdmin(index) {
+    let productosAdmin = JSON.parse(localStorage.getItem('productos_admin_reyes')) || [];
+    productosAdmin.splice(index, 1);
+    localStorage.setItem('productos_admin_reyes', JSON.stringify(productosAdmin));
+    window.location.reload();
+}
+
+function eliminarUsuarioAdmin(index) {
+    let usuariosAdmin = JSON.parse(localStorage.getItem('usuarios_reyes')) || [];
+    usuariosAdmin.splice(index, 1);
+    localStorage.setItem('usuarios_reyes', JSON.stringify(usuariosAdmin));
+    window.location.reload();
 }

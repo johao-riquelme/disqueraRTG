@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN - Nuevo Producto | The Reyes Records</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-dark text-light">
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Menú Lateral del Administrador -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-black sidebar collapse border-end border-secondary min-vh-100 p-3">
+            <div class="position-sticky">
+                <h4 class="gold-title fw-bold text-center py-3">THE REYES</h4>
+                <ul class="nav flex-column gap-2">
+                    <li class="nav-item"><a class="nav-link text-light" href="admin-home.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="admin-productos.html"><i class="bi bi-box-seam me-2"></i> Productos</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning fw-bold" href="admin-usuarios.html"><i class="bi bi-people me-2"></i> Usuarios</a></li>
+                    <hr class="border-secondary">
+                    <li class="nav-item"><a class="nav-link text-danger" href="index.html"><i class="bi bi-box-arrow-left me-2"></i> Salir al Sitio</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-secondary">
+                <h1 class="h2 gold-title">Nuevo Producto</h1>
+                <span class="text-warning fw-bold"><i class="bi bi-person-circle"></i> Administrador</span>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <div class="card rr text-light border-gold p-4 shadow-lg bg-dark">
+                        <div class="card-body">
+                            
+                            <form id="form-nuevo-producto">
+                                <div class="mb-3">
+                                    <label for="codigoProd" class="form-label text-warning">Código de Producto (Mínimo 3 caracteres)</label>
+                                    <input type="text" class="form-control bg-dark text-light border-secondary" id="codigoProd" placeholder="Ej: PROD001" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nombreProd" class="form-label text-warning">Nombre del Producto (Máx 100 caracteres)</label>
+                                    <input type="text" class="form-control bg-dark text-light border-secondary" id="nombreProd" maxlength="100" placeholder="Ej: Micrófono Condensador Pro" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="descProd" class="form-label text-warning">Descripción (Opcional, Máx 500 caracteres)</label>
+                                    <textarea class="form-control bg-dark text-light border-secondary" id="descProd" rows="3" maxlength="500" placeholder="Detalles técnicos del producto..."></textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="precioProd" class="form-label text-warning">Precio USD ($)</label>
+                                        <input type="number" step="0.01" min="0" class="form-control bg-dark text-light border-secondary" id="precioProd" placeholder="2999" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="stockProd" class="form-label text-warning">Stock (Enteros >= 0)</label>
+                                        <input type="number" step="1" min="0" class="form-control bg-dark text-light border-secondary" id="stockProd" placeholder="10" required>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="stockCriticoProd" class="form-label text-warning">Stock Crítico (Alerta opcional)</label>
+                                        <input type="number" step="1" min="0" class="form-control bg-dark text-light border-secondary" id="stockCriticoProd" placeholder="3">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="categoriaProd" class="form-label text-warning">Categoría</label>
+                                        <select class="form-select bg-dark text-light border-secondary" id="categoriaProd" required>
+                                            <option value="">Seleccione categoría...</option>
+                                            <option value="microfonos">Micrófonos</option>
+                                            <option value="interfaces">Interfaces</option>
+                                            <option value="planes">Planes de Estudio</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="imagenProd" class="form-label text-warning">Ruta de Imagen (Ej: img/interfaz1.jpg)</label>
+                                    <input type="text" class="form-control bg-dark text-light border-secondary" id="imagenProd" placeholder="img/interfaz1.jpg">
+                                </div>
+
+                                <div id="mensaje-status-admin"></div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-warning w-100 fw-bold py-2">GUARDAR PRODUCTO</button>
+                                    <a href="admin-productos.html" class="btn btn-outline-secondary w-100 fw-bold py-2">CANCELAR</a>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
